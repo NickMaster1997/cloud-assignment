@@ -36,7 +36,7 @@ public class ESManager {
     public RestHighLevelClient CreateHighLevelClient()
             throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
 
-        boolean useSSL = false;        
+        boolean useSSL = true;        
         
         HttpHost httpHost = new HttpHost("localhost", 9200, "https");
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();

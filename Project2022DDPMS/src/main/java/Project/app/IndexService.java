@@ -1,6 +1,7 @@
 package Project.app;
 
 import org.elasticsearch.client.RestHighLevelClient;
+import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -15,6 +16,7 @@ import Project.tools.*;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 
 import java.io.IOException;
 
@@ -86,6 +88,28 @@ public class IndexService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+
+    public void MyQueryService(String name, String value) {
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.termQuery(name, value));
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse;
+        try {
+            searchResponse = client.search(searchRequest,RequestOptions.DEFAULT);
+            SearchHits hits = searchResponse.getHits();
+            TotalHits tHits = hits.getTotalHits();
+			for(SearchHit s : hits) {
+					System.out.println(s.getSourceAsString());
+                    System.out.println("\n");
+			}
+            System.out.println(tHits.value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
